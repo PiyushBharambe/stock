@@ -1,0 +1,105 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMIUX970m87FhRIkbnS6ebl",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/PiyushBharambe/stock/blob/main/stock_prediction\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "id": "0jqkv3Y4_a62"
+      },
+      "outputs": [],
+      "source": [
+        "import yfinance as yf\n",
+        "from sklearn.linear_model import LinearRegression\n",
+        "import numpy as np\n",
+        "\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "\n",
+        "# Download data\n",
+        "data = yf.download('AAPL', period='100d')\n",
+        "close_prices = data['Close'].values\n",
+        "\n",
+        "# Prepare data\n",
+        "X = close_prices[:-1].reshape(-1, 1)\n",
+        "y = close_prices[1:]\n",
+        "\n",
+        "# Train model\n",
+        "model = LinearRegression()\n",
+        "model.fit(X, y)\n",
+        "\n",
+        "# Predict tomorrow’s price\n",
+        "latest_price = close_prices[-1]\n",
+        "predicted_price = model.predict(np.array([[latest_price]]).reshape(1, -1))[0]\n",
+        "\n",
+        "# Print result\n",
+        "print(f\"Predicted closing price is: ${float(predicted_price):.2f}\")\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "P9fXdcor_0BT",
+        "outputId": "3c6bf40f-4b2a-451e-8d86-529c2d3a5efc"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/tmp/ipython-input-3-2876846104.py:2: FutureWarning: YF.download() has changed argument auto_adjust default to True\n",
+            "  data = yf.download('AAPL', period='100d')\n",
+            "[*********************100%***********************]  1 of 1 completed"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Predicted closing price is: $211.97\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "\n",
+            "/tmp/ipython-input-3-2876846104.py:18: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)\n",
+            "  print(f\"Predicted closing price is: ${float(predicted_price):.2f}\")\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
